@@ -1,38 +1,369 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+/* Body styling for overall background and font */
+body {
+  background-image: url('./background.jpg'); /* Ensure the path is correct */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   min-height: 100vh;
+}
+
+/* Modal overlay styling */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+}
+
+/* Image modal styling */
+.modal img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 8px;
+}
+
+/* Main lookup container with semi-transparent overlay */
+.lookup-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: rgba(12, 6, 76, 0.85); /* Dark blue with transparency */
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Search bar section */
+.search-bar {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px; /* Adds space between the buttons */
+}
+
+.search-bar input[type="text"] {
+  width: 70%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #000;
+  margin-right: 10px;
+}
+
+/* Buttons styling in search bar */
+.search-button {
+  border-radius: 8px;
+  background-color: green;
   color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.App-link {
-  color: #61dafb;
+.search-button:hover {
+  background-color: lightgreen; /* Change on hover */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.hold-button {
+  background-color: darkblue;
+  border-radius: 8px;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.hold-button:hover {
+  background-color: lightblue; /* Change on hover */
+}
+
+/* Layout for columns container */
+.columns-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  padding: 20px;
+}
+
+/* Left and right column styling */
+.left-column {
+  flex: 2;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.right-column {
+  flex: 1;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Information display styling */
+.info-display {
+  text-align: left;
+  color: #f0f0f0;
+}
+
+/* Right column image styling */
+.image-wrapper {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.info-image {
+  width: 120px;
+  height: auto;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  margin-bottom: 10px;
+}
+
+.info-image:hover {
+  transform: scale(1.1);
+}
+
+.image-label {
+  font-size: 14px;
+  color: #ffffff;
+}
+.warning-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+  z-index: 1001; /* Higher than the modal */
+}
+
+/* Warning modal content styling */
+.warning-modal p {
+  color: white;
+  font-size: 18px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.warning-modal button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  margin: 0 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.warning-modal {
+  display: flex;          /* Use flexbox layout */
+  flex-direction: column; /* Stack items vertically */
+  align-items: center;    /* Center items horizontally */
+  justify-content: center; /* Center items vertically */
+  background-color: rgba(57, 14, 14, 0.9); /* Slightly transparent background */
+  padding: 20px;         /* Add some padding */
+  border-radius: 10px;   /* Rounded corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+.warning-modal p {
+  margin: 5px 0; /* Add vertical spacing between paragraphs */
+}
+/* Confirm button styling */
+.confirm-button {
+  padding: 12px 24px;
+  background-color: #28a745;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.2s;
+  margin-top: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.confirm-button:hover {
+  background-color: #218838;
+  transform: scale(1.05);
+}
+.restart-button{
+  border-radius: 8px;
+  background-color: rgb(119, 0, 0);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+/* Delete button styling */
+.delete-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+}
+.modal-warning {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-warning p {
+  background: rgb(0, 24, 98);
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+/* Confirmation modal content styling */
+.modal-content {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 400px;
+  margin: auto;
+}
+
+/* Delete confirmation buttons */
+.confirm-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 8px;
+  margin-left: 10px;
+  margin-top: 20px;
+  background-color: #28a745;
+}
+
+.cancel-button {
+  background-color: #6c757d;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.cancel-button:hover {
+  background-color: #5a6268;
+}
+
+.edit-container {
+  background-color: #ffffff;
+  width: 85%;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.edit-input {
+  width: 100%;
+  padding-right: 10px;
+  margin-right: 110px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+.edit-input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.confirm-button {
+  background-color: #28a745;
+  color: white;
+  padding: 8px 25px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.confirm-button:hover {
+  background-color: #218838;
+}
+/* Responsive design */
+@media (min-width: 800px) {
+  .columns-container {
+    flex-direction: row;
   }
-  to {
-    transform: rotate(360deg);
+
+  .left-column, .right-column {
+    width: 50%;
+  }
+}
+
+@media (max-width: 600px) {
+  .search-bar input[type="text"] {
+    width: 80%;
+  }
+
+  .info-image {
+    width: 80px;
+  }
+
+  .confirm-button {
+    width: 100%;
   }
 }
