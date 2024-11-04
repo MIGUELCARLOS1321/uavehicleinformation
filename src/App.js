@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import PocketBase from 'pocketbase';
+import { collection, doc, getDocs, getDoc, deleteDoc, updateDoc } from 'firebase/firestore';
+import { db } from './firebase/firebase';
 import './App.css';
-
-const pb = new PocketBase('http://127.0.0.1:8090');
 
 function LicenseLookup() {
   const [stickerNumber, setStickerNumber] = useState('');
@@ -23,17 +22,18 @@ function LicenseLookup() {
 
     if (heldNumbers[stickerNumber]) {
       setError('This Vehicle Number is currently on Hold due to some Personal Reasons. Do you want to unhold it?');
+      setIsLoading(false);
       return;
     }
 
     try {
-      const records = await pb.collection('confirmedInformation').getFullList({
-        filter: `stickerNumber="${stickerNumber}"`,
-      });
+      const querySnapshot = await getDocs(collection(db, 'confirmedData'));
+      const records = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      const record = records.find((rec) => rec.stickerNumber === stickerNumber);
 
-      if (records.length > 0) {
-        setInfo(records[0]);
-        setEditedInfo(records[0]);
+      if (record) {
+        setInfo(record);
+        setEditedInfo(record);
       } else {
         setError('No information found for the provided sticker number.');
         setInfo(null);
@@ -71,7 +71,7 @@ function LicenseLookup() {
   const confirmDelete = async () => {
     if (info) {
       try {
-        await pb.collection('confirmedInformation').delete(info.id);
+        await deleteDoc(doc(db, 'confirmedData', info.id));
         setError('Vehicle information deleted successfully.');
         setInfo(null);
       } catch (err) {
@@ -98,7 +98,7 @@ function LicenseLookup() {
 
   const saveEdits = async () => {
     try {
-      await pb.collection('confirmedInformation').update(info.id, editedInfo);
+      await updateDoc(doc(db, 'confirmedData', info.id), editedInfo);
       setInfo(editedInfo);
       setEditMode(false);
       setError('Information updated successfully.');
@@ -114,10 +114,11 @@ function LicenseLookup() {
 
   const confirmRestart = async () => {
     try {
-      const allRecords = await pb.collection('confirmedInformation').getFullList();
-      for (const record of allRecords) {
-        await pb.collection('confirmedInformation').delete(record.id);
-      }
+      const querySnapshot = await getDocs(collection(db, 'confirmedData'));
+      const deletePromises = querySnapshot.docs.map((docSnapshot) =>
+        deleteDoc(doc(db, 'confirmedData', docSnapshot.id))
+      );
+      await Promise.all(deletePromises);
       setError('All vehicle information deleted successfully.');
       setInfo(null);
     } catch (err) {
