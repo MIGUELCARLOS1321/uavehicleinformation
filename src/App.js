@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { collection, doc, getDocs, getDoc, deleteDoc, updateDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, getDoc, deleteDoc, updateDoc, deleteField } from 'firebase/firestore';
 import { db } from './firebase/firebase';
 import './App.css';
 
@@ -74,6 +74,7 @@ function LicenseLookup() {
         await deleteDoc(doc(db, 'confirmedData', info.id));
         setError('Vehicle information deleted successfully.');
         setInfo(null);
+
       } catch (err) {
         setError('Error deleting vehicle information.');
         console.error(err);
@@ -114,11 +115,31 @@ function LicenseLookup() {
 
   const confirmRestart = async () => {
     try {
-      const querySnapshot = await getDocs(collection(db, 'confirmedData'));
-      const deletePromises = querySnapshot.docs.map((docSnapshot) =>
-        deleteDoc(doc(db, 'confirmedData', docSnapshot.id))
+      // Define the collections you want to delete
+      const collectionsToDelete = [
+        'confirmedData',
+        'parkingservice',
+        'pickndrop',
+        'parkingfourwheel',
+        'parkingtwowheel'
+      ];
+
+      // Loop through each collection and delete all documents
+      for (const collectionName of collectionsToDelete) {
+        const querySnapshot = await getDocs(collection(db, collectionName));
+        const deletePromises = querySnapshot.docs.map((docSnapshot) =>
+          deleteDoc(doc(db, collectionName, docSnapshot.id))
+        );
+        await Promise.all(deletePromises);
+      }
+
+      const usersSnapshot = await getDocs(collection(db, 'user'));
+      const updatePromises = usersSnapshot.docs.map((userDoc) =>
+        updateDoc(doc(db, 'user', userDoc.id), { registeredfor: "" })
       );
-      await Promise.all(deletePromises);
+      await Promise.all(updatePromises);
+
+      // Success feedback
       setError('All vehicle information deleted successfully.');
       setInfo(null);
     } catch (err) {
@@ -128,6 +149,7 @@ function LicenseLookup() {
       setShowRestartWarning(false);
     }
   };
+
 
   const cancelRestart = () => {
     setShowRestartWarning(false);
