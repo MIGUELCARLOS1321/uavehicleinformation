@@ -121,7 +121,7 @@ function LicenseLookup() {
         'parkingservice',
         'pickndrop',
         'parkingfourwheel',
-        'parkingtwowheel'
+        'parkingtwovehicle'
       ];
 
       // Loop through each collection and delete all documents
