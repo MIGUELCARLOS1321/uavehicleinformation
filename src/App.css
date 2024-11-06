@@ -14,12 +14,12 @@ body {
   min-height: 100vh;
 }
 .back-arrow-button {
-  font-size: 40px; /* Increase the font size to make the arrow bigger */
-  color: #f50000;
+  font-size: 60px; /* Increase the font size to make the arrow bigger */
+  color: #fffdfd;
   text-decoration: none;
   position: absolute;
   top: 20px;
-  left: 20px;
+  left: 30px;
   padding: 10px; /* Adds padding around the arrow for a bigger clickable area */
   background-color: transparent; /* Removes any background */
   border: none; /* Removes any border */
@@ -27,7 +27,7 @@ body {
 }
 
 .back-arrow-button:hover {
-  color: #15ff00;
+  color: #8a8a8a;
 }
 
 .back-arrow-button:focus {
