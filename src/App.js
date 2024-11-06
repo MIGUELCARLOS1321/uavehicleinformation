@@ -14,7 +14,9 @@ function LicenseLookup() {
   const [editMode, setEditMode] = useState(false);
   const [editedInfo, setEditedInfo] = useState({});
   const [showRestartWarning, setShowRestartWarning] = useState(false);
-
+  const handleBackClick = () => {
+    window.location.href = 'https://uavehicleconfirmation.vercel.app';
+  };
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError('');
@@ -157,6 +159,7 @@ function LicenseLookup() {
 
   return (
     <div className="lookup-container">
+      <button onClick={handleBackClick} className="back-arrow-button">←</button>
       <h1>Vehicle Information</h1>
       <form onSubmit={handleSubmit} className="search-bar">
         <input
